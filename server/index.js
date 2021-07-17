@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 5000
+
 const config = require('./config/key');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -22,9 +22,9 @@ mongoose.connect(config.mongoURI,{
 
 app.get('/', (req, res)=> res.send('Hello World!saa아ㅓ눌ㄴ'))
 
-app.get('/api/hello', (req, res)=>{
-    res.send("안녕하세요!!!")
-})
+app.get('/api/hello', (req, res)=>
+    res.send('안녕하세요!!!')
+)
 
 app.post('/api/users/register', (req, res)=>{
     //회원가입시에 필요한 정보를 cli에서 가져오면
@@ -52,7 +52,7 @@ app.post('/api/users/login', (req, res)=>{
         }
     
    //요청된 이메일이 있다면 비밀번호가 맞는지 확인한다
-        user.comparePassword(req.body.Password, (err, isMatch)=>{
+        user.comparePassword(req.body.password, (err, isMatch)=>{
             if(!isMatch)
             return res.json({ loginSuccess: false, message:"비밀번호가 틀렸습니다."})
         
@@ -98,5 +98,7 @@ app.get('/api/users/logout', auth, (req, res)=>{
         })
     })
 })
+
+const port = 5000
 
 app.listen(port, ()=>console.log('Example app listening on port ${port}!'))

@@ -14,7 +14,7 @@ const userSchema = mongoose.Schema({
         trim: true,
         unique:1
     },
-    Password: {
+    password: {
         type:String,
         minlength:5
     },
@@ -42,15 +42,15 @@ userSchema.pre('save', function( next ){
 
     //이때 정보를 수정할 때마다ㅏ 암호화를 할수는 없기때문에
     //비밀번호 수정시에만 암호화하도록 조건을 달아준다.
-    if(user.isModified('Password')){
+    if(user.isModified('password')){
 
     //솔트를 만들고 펑션은 에러가 난다면 err아니라면 salt
     bcrypt.genSalt(saltRounds, function(err, salt){
         if (err) return next(err)
 
-        bcrypt.hash(user.Password, salt, function(err, hash){
+        bcrypt.hash(user.password, salt, function(err, hash){
             if (err) return next(err)
-            user.Password=hash 
+            user.password=hash 
             next()
 
             })
@@ -65,9 +65,9 @@ userSchema.methods.comparePassword = function(plainPassword, cb){
     //플레인패스워드가 1234567이라하고 암호화된비밀번호가 같은지
     //확인해야한다 따라서 1234567을 암호화해서 db에있는
     //암호화패스워드와 비교해서 맞는지 봐야한다
-    bcrypt.compare(plainPassword, this.Password, function(err, isMatch){
+    bcrypt.compare(plainPassword, this.password, function(err, isMatch){
         if(err) return cb(err);
-        cb(null, isMatch)
+        cb(null, isMatch);
     })
 }
 
